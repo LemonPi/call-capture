@@ -1,6 +1,6 @@
 {
   "name": "deferred",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrap around an object and capture all calls made to it",
   "main": "index.js",
   "scripts": {

@@ -61,6 +61,9 @@ function deferred(object, options) {
             } else {
                 // must be a property; we'll override the setter
                 Object.defineProperty(def, property, {
+                    get: function () {
+                        return object[property];
+                    },
                     set: function (value) {
                         this.queue.push(new SetCommand(object, property, value));
                         if (opts.executeImmediately) {
