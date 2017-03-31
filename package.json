@@ -1,0 +1,22 @@
+{
+  "name": "deferred",
+  "version": "0.0.1",
+  "description": "Wrap around an object and capture all calls made to it",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/LemonPi/deferred.git"
+  },
+  "keywords": [
+    "deferred",
+    "calling"
+  ],
+  "author": "Johnson Zhong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LemonPi/deferred/issues"
+  },
+  "homepage": "https://github.com/LemonPi/deferred#readme"
+}
