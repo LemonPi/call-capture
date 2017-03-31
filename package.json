@@ -1,7 +1,7 @@
 {
-  "name": "deferred",
+  "name": "call-capture",
   "version": "0.0.2",
-  "description": "Wrap around an object and capture all calls made to it",
+  "description": "Capture calls and property assignments on an object",
   "main": "index.js",
   "scripts": {
   },

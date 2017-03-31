@@ -1,11 +1,11 @@
-## deferred
+## capture
 Wrap around an object and capture sets on its properties and calls on its methods.
 
 ## usage
 
 ### node
 ```javascript
-const deferred = require("deferred");
+const capture = require("call-capture");
 ```
 
 ### browser
@@ -13,11 +13,11 @@ const deferred = require("deferred");
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="src/deferred.js"></script>
+    <script src="src/capture.js"></script>
 </head>
 <body>
 <script>
-// deferred is in the global scope
+// capture is in the global scope
 </script>
 </body>
 </html>
@@ -26,9 +26,9 @@ const deferred = require("deferred");
 ### deferring
 ```javascript
 // assume we have a canvas on a webpage
-var ctx = deferred(canvas.getContext("2d"));
+var ctx = capture(canvas.getContext("2d"));
 
-// call and set on the deferred object, will not execute immediately
+// call and set on the capture object, will not execute immediately
 ctx.beginPath();
 ctx.lineWidth = 5;
 ctx.moveTo(5, 10);
@@ -59,7 +59,7 @@ then you can patch its creation function.
 // wrap around with canvas drawing
 var oldGetContext = HTMLCanvasElement.prototype.getContext;
 HTMLCanvasElement.prototype.getContext = function () {
-    return deferred(oldGetContext.apply(this, arguments));
+    return capture(oldGetContext.apply(this, arguments));
 };
 ```
 
@@ -71,5 +71,5 @@ If you don't actually to defer anything, but instead capture them, then that is 
 via the immediatelyExecute option:
 
 ```javascript
-var ctx = deferred(canvas.getContext("2d"), {immediatelyExecute: true});
+var ctx = capture(canvas.getContext("2d"), {immediatelyExecute: true});
 ```

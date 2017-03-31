@@ -7,16 +7,16 @@
 <body>
 <canvas width="500" height="500" id="test" style="border:2px solid black; display:block"></canvas>
 <button id="execute">Execute Queued Commands</button>
-<script src="src/deferred.js"></script>
+<script src="src/capture.js"></script>
 <script>
 
     // wrap around with canvas drawing
     var oldGetContext = HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext = function () {
-        return deferred(oldGetContext.apply(this, arguments));
+        return capture(oldGetContext.apply(this, arguments));
     };
 
-    // alternatively, if you have access to getting the context, you can say deferred(canvas.getContext("2d"))
+    // alternatively, if you have access to getting the context, you can say capture(canvas.getContext("2d"))
     var canvas = document.getElementById("test");
     window.ctx = canvas.getContext("2d");
     ctx.lineWidth = 2;
