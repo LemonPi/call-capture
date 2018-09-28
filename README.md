@@ -73,3 +73,9 @@ via the immediatelyExecute option:
 ```javascript
 var ctx = capture(canvas.getContext("2d"), {immediatelyExecute: true});
 ```
+
+This and other options can be configured by directly modifying the captured object:
+
+```javascript
+ctx.opts.executeImmediately = false;
+```

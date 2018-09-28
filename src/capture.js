@@ -1,8 +1,8 @@
 class SetCommand {
     constructor(parent, name, value) {
         this._parent = parent;
-        this.name    = name;
-        this.value   = value;
+        this.name = name;
+        this.value = value;
     }
 
     execute() {
@@ -13,8 +13,8 @@ class SetCommand {
 class CallCommand {
     constructor(parent, name, args) {
         this._parent = parent;
-        this.name    = name;
-        this.args    = args;
+        this.name = name;
+        this.args = args;
     }
 
     execute() {
@@ -32,8 +32,8 @@ class CallCommand {
  * set true to immediately run and return (in addition to capturing the calls)
  */
 function capture(object, options) {
-    const opts = options || {executeImmediately: false};
-    const def  = {
+    const def = {
+        opts : {...{executeImmediately: false}, ...options},
         // queue of commands for the object to do
         queue: [],
         // execute all commands in queue
@@ -53,21 +53,21 @@ function capture(object, options) {
         // eslint-disable-next-line guard-for-in
         try {
             if (typeof object[property] === 'function') {
-                def[property] = function() {
+                def[property] = function () {
                     this.queue.push(new CallCommand(object, property, arguments));
-                    if (opts.executeImmediately) {
+                    if (this.opts.executeImmediately) {
                         return this.queue[this.queue.length - 1].execute();
                     }
                 };
             } else {
                 // must be a property; we'll override the setter
                 Object.defineProperty(def, property, {
-                    get: function() {
+                    get: function () {
                         return object[property];
                     },
-                    set: function(value) {
+                    set: function (value) {
                         this.queue.push(new SetCommand(object, property, value));
-                        if (opts.executeImmediately) {
+                        if (this.opts.executeImmediately) {
                             return this.queue[this.queue.length - 1].execute();
                         }
                     }
