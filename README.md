@@ -79,3 +79,12 @@ This and other options can be configured by directly modifying the captured obje
 ```javascript
 ctx.opts.executeImmediately = false;
 ```
+
+### pause/start capturing
+You can suspend capture and execute commands immediately by calling
+
+```javascript
+ctx.pauseCapture();
+// immediately executed commands on ctx...
+ctx.resumeCapture();
+```

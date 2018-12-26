@@ -1,6 +1,6 @@
 {
   "name": "call-capture",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Capture calls and property assignments on an object",
   "main": "index.js",
   "scripts": {},

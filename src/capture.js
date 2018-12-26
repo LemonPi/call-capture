@@ -34,18 +34,36 @@ class CallCommand {
 function capture(object, options) {
     const def = {
         opts : {...{executeImmediately: false}, ...options},
+        // when the capture is stopped, we execute immediately and don't push to queue
+        _stopped: false,
         // queue of commands for the object to do
         queue: [],
-        // execute all commands in queue
+        /**
+         * Resume capturing (after construction we're default in capture)
+         */
+        resumeCapture() {
+            this._stopped = false;
+        },
+        /**
+         * Temporarily stop capturing to start executing commands immediately
+         */
+        pauseCapture() {
+            this._stopped = true;
+        },
+        /**
+         * Execute all commands in queue
+         */
         executeAll() {
             this.queue.forEach((command) => {
                 command.execute();
             });
         },
-        // clear all commands in queue
+        /**
+         * Clear all commands in queue
+         */
         clearQueue() {
             this.queue = [];
-        }
+        },
     };
 
     // mask properties all along its inheritance chain
@@ -54,8 +72,10 @@ function capture(object, options) {
         try {
             if (typeof object[property] === 'function') {
                 def[property] = function () {
-                    this.queue.push(new CallCommand(object, property, arguments));
-                    if (this.opts.executeImmediately) {
+                    if (this._stopped === false) {
+                        this.queue.push(new CallCommand(object, property, arguments));
+                    }
+                    if (this.opts.executeImmediately || this._stopped) {
                         return this.queue[this.queue.length - 1].execute();
                     }
                 };
@@ -66,8 +86,10 @@ function capture(object, options) {
                         return object[property];
                     },
                     set: function (value) {
-                        this.queue.push(new SetCommand(object, property, value));
-                        if (this.opts.executeImmediately) {
+                        if (this._stopped === false) {
+                            this.queue.push(new SetCommand(object, property, value));
+                        }
+                        if (this.opts.executeImmediately || this._stopped) {
                             return this.queue[this.queue.length - 1].execute();
                         }
                     }
