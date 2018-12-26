@@ -72,11 +72,13 @@ function capture(object, options) {
         try {
             if (typeof object[property] === 'function') {
                 def[property] = function () {
-                    if (this._stopped === false) {
+                    if (this._stopped) {
+                        object[property].apply(object, arguments);
+                    } else {
                         this.queue.push(new CallCommand(object, property, arguments));
-                    }
-                    if (this.opts.executeImmediately || this._stopped) {
-                        return this.queue[this.queue.length - 1].execute();
+                        if (this.opts.executeImmediately) {
+                            return this.queue[this.queue.length - 1].execute();
+                        }
                     }
                 };
             } else {
@@ -86,11 +88,13 @@ function capture(object, options) {
                         return object[property];
                     },
                     set: function (value) {
-                        if (this._stopped === false) {
+                        if (this._stopped) {
+                            object[property] = value;
+                        } else {
                             this.queue.push(new SetCommand(object, property, value));
-                        }
-                        if (this.opts.executeImmediately || this._stopped) {
-                            return this.queue[this.queue.length - 1].execute();
+                            if (this.opts.executeImmediately) {
+                                return this.queue[this.queue.length - 1].execute();
+                            }
                         }
                     }
                 });
